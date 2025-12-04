@@ -14,7 +14,21 @@ def emotion_detector(text):
     data = response.json()
 
     text = data["emotionPredictions"][0]["emotionMentions"][0]["span"]["text"]
-    print(text)
-    return text
+    dominant_emotion = ''
+    dominant_score = 0
+    emotions = {}
+    for key, value in data["emotionPredictions"][0]["emotion"].items():
+        print(key, value)
+        emotions[key] = value
+        if dominant_emotion is None:
+            dominant_emotion = key
+            dominant_score = value
+        else:
+            if (value > dominant_score):
+                dominant_score = value 
+                dominant_emotion = key
+    emotions['dominant_emotion'] = dominant_emotion
+    print(emotions)
+    return emotions
 
-emotion_detector('I love this new technology.')
+emotion_detector('I am so happy I am doing this.')
